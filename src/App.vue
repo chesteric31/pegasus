@@ -1,26 +1,16 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
-    <!--<a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>-->
-    <a href="">
-      <img src="./assets/pegasus.png" class="logo pegasus" alt="Pegasus logo"/>
-    </a>
-    <p>
-    </p>
-  </div>
-  <HelloWorld msg="Welcome on Pegasus!"/>
+  <nav>
+    <router-link to="/">Home</router-link>&nbsp;|
+    <router-link to="/form">Form</router-link>&nbsp;|
+    <router-link to="/about">About</router-link>
+  </nav>
+  <router-view></router-view>
 </template>
 
-<style scoped>
-.logo {
+<style scoped>.logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
