@@ -14,7 +14,6 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/pegasus.png" class="logo pegasus" alt="Pegasus logo"/>
     </a>
     <p>
-      <Button>Boum</Button>
     </p>
   </div>
   <HelloWorld msg="Welcome on Pegasus!"/>
