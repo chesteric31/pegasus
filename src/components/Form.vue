@@ -35,17 +35,18 @@
     <h3>Form Submitted</h3>
     <div class="form-group">
       <label>Day</label>
-      <img :src="buildUrl(indexes.get('day'))">
+      <img :src="buildUrl(indexes.get('day'))" alt="Day index photo">
     </div>
     <div class="form-group">
       <label>Night</label>
-      <img :src="buildUrl(indexes.get('night'))">
+      <img :src="buildUrl(indexes.get('night'))" alt="Night index photo">
     </div>
     <div class="form-group">
       <label>Exclusive Night</label>
-      <img :src="buildUrl(indexes.get('exclusiveNight'))">
+      <img :src="buildUrl(indexes.get('exclusiveNight'))" alt="Exclusive night index photo">
     </div>
     <button class="btn btn-secondary" @click="formSubmitted = false">Retry</button>
+    <button class="btn btn-primary" @click="send">Send to broker</button>
   </div>
 </template>
 
@@ -84,7 +85,7 @@ export default defineComponent({
     },
     buildUrl(blob: Blob) {
       return URL.createObjectURL(blob);
-    }
+    },
   }
 });
 </script>
