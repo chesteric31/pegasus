@@ -1,13 +1,14 @@
 <template>
+  <camera :resolution="{ width: 375, height: 200 }" ref="camera" autoplay/>
   <div v-if="!formSubmitted">
-    <camera :resolution="{ width: 375, height: 200 }" ref="camera" autoplay></camera>
     <form @submit.prevent="submitForm">
       <div class="input-group mb-3">
         <span class="input-group-text"><i class="fas fa-sun"></i></span>
         <input type="text" class="form-control" placeholder="Enter day index" readonly
                :value="(indexes.get('day') != null)? 'Taken!':''">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="button" @click="snapshot('day')"><i class="fas fa-camera"></i></button>
+          <button class="btn btn-primary" type="button" @click="snapshot('day')"><i class="fas fa-camera"></i>
+          </button>
         </div>
       </div>
       <div class="input-group mb-3">
@@ -15,7 +16,8 @@
         <input type="text" class="form-control" placeholder="Enter night index" readonly
                :value="(indexes.get('night') != null)? 'Taken!':''">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="button" @click="snapshot('night')"><i class="fas fa-camera"></i>
+          <button class="btn btn-primary" type="button" @click="snapshot('night')"><i
+              class="fas fa-camera"></i>
           </button>
         </div>
       </div>
@@ -35,27 +37,28 @@
     <h3>Form Submitted</h3>
     <div class="form-group">
       <label>Day</label>
-      <img :src="buildUrl(indexes.get('day'))" alt="Day index photo">
+      <img :src="buildUrl(indexes.get('day') as Blob)" alt="Day index photo">
     </div>
     <div class="form-group">
       <label>Night</label>
-      <img :src="buildUrl(indexes.get('night'))" alt="Night index photo">
+      <img :src="buildUrl(indexes.get('night') as Blob)" alt="Night index photo">
     </div>
     <div class="form-group">
       <label>Exclusive Night</label>
-      <img :src="buildUrl(indexes.get('exclusiveNight'))" alt="Exclusive night index photo">
+      <img :src="buildUrl(indexes.get('exclusiveNight') as Blob)" alt="Exclusive night index photo">
     </div>
     <button class="btn btn-secondary" @click="formSubmitted = false">Retry</button>
-    <button class="btn btn-primary" @click="send">Send to broker</button>
+    <button class="btn btn-primary" @click="send">Send</button>
   </div>
 </template>
 
 <script lang="ts">
 import Camera from "simple-vue-camera";
+import axios from 'axios';
 import {defineComponent, ref} from "vue";
 
 export default defineComponent({
-  setup(props) {
+  setup() {
     // Get a reference of the component
     const camera = ref<InstanceType<typeof Camera>>();
     const indexes = ref<InstanceType<typeof Map>>(new Map<string, Blob>());
@@ -63,7 +66,7 @@ export default defineComponent({
     const snapshot = async (type: string) => {
       const blob = await camera.value?.snapshot() as Blob;
       // To show the screenshot with an image tag, create a url
-      const url = URL.createObjectURL(blob);
+      URL.createObjectURL(blob);
       indexes.value?.set(type, blob);
       //console.log(indexes.value, blob, url, type)
     }
@@ -73,6 +76,9 @@ export default defineComponent({
       camera,
       snapshot
     }
+  },
+  components: {
+    Camera
   },
   data() {
     return {
@@ -86,6 +92,28 @@ export default defineComponent({
     buildUrl(blob: Blob) {
       return URL.createObjectURL(blob);
     },
+    send() {
+      console.log('ici')
+      console.log(this.indexes)
+      let formData = new FormData();
+      formData.append("type", "day");
+      formData.append('file', this.indexes.get("day") as Blob);
+      axios.post('https://192.168.0.12:8443/fotos/',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+      ).then(() => {
+            console.log('SUCCESS!!');
+          }
+      ).catch(error => {
+            console.error('FAILURE!!', error);
+            alert(error)
+          }
+      );
+    }
   }
 });
 </script>

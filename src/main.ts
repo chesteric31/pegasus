@@ -6,9 +6,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 import App from './App.vue'
 import router from './router/index'
-import Camera from 'simple-vue-camera'
 
 createApp(App)
     .use(router)
-    .component('camera', Camera)
     .mount('#app')
