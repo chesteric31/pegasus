@@ -98,7 +98,9 @@ export default defineComponent({
       let formData = new FormData();
       formData.append("type", "day");
       formData.append('file', this.indexes.get("day") as Blob);
-      axios.post('https://192.168.0.12:8443/fotos/',
+      //const url = 'https://192.168.0.12:8443/fotos/';
+      const url = '/fotos/';//http://192.168.0.12:8080/fotos/';
+      axios.post(url,
           formData,
           {
             headers: {
