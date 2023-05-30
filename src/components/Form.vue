@@ -92,14 +92,9 @@ export default defineComponent({
     buildUrl(blob: Blob) {
       return URL.createObjectURL(blob);
     },
-    send() {
-      console.log('ici')
-      console.log(this.indexes)
-      let formData = new FormData();
-      formData.append("type", "day");
-      formData.append('file', this.indexes.get("day") as Blob);
+    doSend: (formData: FormData) => {
       //const url = 'https://192.168.0.12:8443/fotos/';
-      const url = '/fotos/';//http://192.168.0.12:8080/fotos/';
+      const url = '<SERVER_API>/fotos/';//http://192.168.0.12:8080/fotos/';
       axios.post(url,
           formData,
           {
@@ -115,6 +110,17 @@ export default defineComponent({
             alert(error)
           }
       );
+    }, buildFormData(type) {
+      let formData = new FormData();
+      formData.append("type", type);
+      formData.append('file', this.indexes.get(type) as Blob);
+      return formData;
+    }, sendFotos() {
+      this.doSend(this.buildFormData("day"));
+      this.doSend(this.buildFormData("night"));
+      this.doSend(this.buildFormData("exclusiveNight"));
+    }, send() {
+      this.sendFotos();
     }
   }
 });
