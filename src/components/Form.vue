@@ -94,7 +94,7 @@ export default defineComponent({
     },
     doSend: (formData: FormData) => {
       //const url = 'https://192.168.0.12:8443/fotos/';
-      const url = '<SERVER_API>/fotos/';//http://192.168.0.12:8080/fotos/';
+      const url = 'https://b9a1-91-86-222-236.ngrok-free.app/fotos/';//http://192.168.0.12:8080/fotos/';
       axios.post(url,
           formData,
           {
